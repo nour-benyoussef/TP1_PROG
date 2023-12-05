@@ -10,7 +10,8 @@
 
 int main(void) {
     char buffer[MAX_SIZE] = {0};
-    char display[MAX_SIZE] = {0};
+   char str1[50];
+    char str2[50];
     int buffer_size;
     int pid;
     int status;
@@ -19,24 +20,26 @@ int main(void) {
     int ret_ex = 0;
     int ret_sig = 0;
     int accum = 0;
+    int length, length_ex, length_sig;
+      struct timespec start, stop;
 
-    struct timespec timestart;
-    struct timespec timestop;
-
-    write(STDOUT_FILENO, "Bienvenue dans le shell Ensea.\n", strlen("Bienvenue dans le shell Ensea.\n"));
-    write(STDOUT_FILENO, "Pour quitter, tapez exit.\n", strlen("Pour quitter, tapez exit.\n"));
+   write(1, "Bienvenue dans le shell Ensea.\n", 31);
+    write(1, "Pour quitter, tapez exit.\n", 27);
+    
 
     while (1) {
-        write(STDOUT_FILENO, "\n enseash ", 10);
+       write(1, "\n", 1);
+        write(1, "enseash", 7);
+        
         
          if (ret_sig == 1) {
-                sprintf(display, "[signal:%d|%d ms]", signal_status, accum);
-                write(STDOUT_FILENO, display, strlen(display));
+                 length_sig = sprintf(str1, "[signal:%d|%d ms]", signal_status, accum);
+                write(1, str1,  length_sig );
             }
         
             if (ret_ex == 1) {
-                sprintf(display, "[exit:%d|%d ms] ", exit_status, accum);
-                write(STDOUT_FILENO, display, strlen(display));
+               length_ex = sprintf(str2, "[exit:%d|%d ms] ", exit_status, accum);
+                write(1, str2, length_ex);
             }
          write(1, " % ", 3);
         buffer_size = read(STDIN_FILENO, buffer, MAX_SIZE);
@@ -46,9 +49,9 @@ int main(void) {
             break;
         }
 
-        clock_gettime(CLOCK_REALTIME, &timestart);
+        clock_gettime(CLOCK_REALTIME, &start);
 
-        // Réinitialisation des variables avant la commande
+
         exit_status = 0;
         signal_status = 0;
         ret_ex = 0;
@@ -96,14 +99,13 @@ int main(void) {
             }
 
             execvp(argv[0], argv);
-            write(STDOUT_FILENO, "Erreur lors de l'exécution de la commande.\n", strlen("Erreur lors de l'exécution de la commande.\n"));
             exit(EXIT_FAILURE);
         } else {
             wait(&status);
-            clock_gettime(CLOCK_REALTIME, &timestop);
-            accum = (timestop.tv_nsec - timestart.tv_nsec) / 1000000;
+            clock_gettime(CLOCK_REALTIME, &stop);
+            accum = (stop.tv_nsec - start.tv_nsec) / 1000000;
 
-            // Détermination des sorties
+           
             if (WIFEXITED(status)) {
                 exit_status = WEXITSTATUS(status);
                 ret_ex = 1;
@@ -112,8 +114,7 @@ int main(void) {
                 ret_sig = 1;
             }
 
-            // Affichage des sorties après l'exécution de la commande
-           
+          
         }
     }
 
