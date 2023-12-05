@@ -1,5 +1,5 @@
 # TP1_PROG
-# réalise par Ben Youssef Nour / Bouzidi Amira
+# Réalise par Ben Youssef Nour / Bouzidi Amira
 
 # Question 1
 Ce programme affiche des messages en utilisant la fonction write().
