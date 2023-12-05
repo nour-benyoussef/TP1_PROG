@@ -14,7 +14,7 @@ Le processus parent (pid != 0) attend que le processus enfant se termine à l'ai
 -> Ces ajouts permettent au programme d'attendre en permanence les commandes saisies par l'utilisateur, d'exécuter ces commandes via le shell, puis de revenir en attente pour une nouvelle saisie.
 
 
-#Question 3
+# Question 3
 Pour la gestion de la sortie du shell avec la commande “exit” : Après l'exécution de chaque commande, il vérifie si la commande saisie est "exit" à l'aide de strcmp(). Si l'utilisateur tape "exit", le programme sort de la boucle infinie (break;), ce qui arrête l'exécution continue des commandes.
 Une fois que l'utilisateur tape "exit" et que le programme sort de la boucle, il affiche un message de sortie "Bye bye...".
 
@@ -29,14 +29,14 @@ Sinon, s'il a été terminé par un signal (WIFSIGNALED(status)), il récupère 
 En résumé, ce bloc de code affiche le prompt du shell, vérifie et affiche les informations sur le statut de fin du processus précédent, à savoir s'il s'est terminé par un signal ou une sortie, fournissant ainsi des informations de suivi à l'utilisateur sur les exécutions précédentes.
 
 
-#Question 5
+# Question 5
 Dans cette partie on s'intéresse à mesure le temps d’exécution de la commande. Avant l'exécution de chaque commande, clock_gettime(CLOCK_REALTIME, &start); est appelé pour enregistrer le temps de départ.
 Après l'exécution de la commande (après wait(&status);), clock_gettime(CLOCK_REALTIME, &stop); est utilisé pour enregistrer le temps d'arrêt.
 Ensuite, accum = (stop.tv_nsec - start.tv_nsec)/1000000; calcule la différence de temps en millisecondes entre le début et la fin de l'exécution de la commande.
 Les informations sur le statut (signal ou sortie) sont maintenant accompagnées du temps d'exécution de la commande. Ces informations sont ajoutées au message affiché après le prompt du shell à l'aide de sprintf().
 
 
-#Question 6
+# Question 6
 une nouvelle logique a été ajoutée pour gérer les commandes avec des arguments. Plutôt que d'exécuter directement la commande entière saisie, le code divise maintenant la commande en tokens (mots) pour identifier la commande et ses arguments distincts.
 La fonction strtok() est utilisée pour diviser la chaîne de caractères en tokens séparés par des espaces. Les tokens sont ensuite stockés dans un tableau de pointeurs args.
 
@@ -45,7 +45,7 @@ Si execvp() échoue (retournant une valeur), le processus enfant sort avec exit(
 
 Ces ajouts permettent au shell de prendre en charge des commandes plus complexes, permettant à l'utilisateur de saisir des commandes avec des arguments.
 
-#Question 7
+# Question 7
 Pour la partie de gestion des redirections avec les symboles < et >, ce code permet de rediriger le flux d'entrée (stdin) et de sortie (stdout) pour les commandes saisies dans le shell. 
 
 *1/Détection et traitement des redirections :
@@ -61,7 +61,7 @@ Après avoir traité les redirections, le code exécute la commande en utilisant
 Si la commande nécessite une redirection de fichier, la redirection est établie avant l'exécution de la commande en modifiant les descripteurs de fichiers avec dup2().
 
 
-#Question 8
+# Question 8
 La partie du code qui concerne les pipes (|) permet de gérer les redirections de flux entre les commandes, en créant un pipeline où la sortie de la première commande est utilisée comme entrée pour la seconde.
 
 *1/Détection et traitement des pipes (|) :
